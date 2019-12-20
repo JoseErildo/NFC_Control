@@ -4,23 +4,63 @@
         <title>NodemMCU e MySQL</title>
         <meta charset="utf-8">
 
-	//design
+	<!--design-->
 	<style>
 		/*ESTILOS GERAIS*/
-
-		
+		.container{
+			width: 50%;
+			margin: 0 auto;
+			background: #87CEEB;
+		}
 
 		/* ESTILOS FORMULARIO*/
 
+		.areaPesquisa{
+			border-radius: 5px;   //radio da borda
+			background-color: #4682B4;  //fundo
+			padding: 10px; //preenchimento
+		}
+
+		input {
+			padding: 10px;
+			margin: 8px 0;
+			border: 1px solid #000;
+			border-radius: 4px;
+		}
+
+		input[type=text] {
+			width: 30%;
+		}
+
+		input[type=submit] {
+			width: 10%;
+			cursor: pointer;
+		}
 		/*ESTILOS TABELA*/
+		
+		table{
+			width: 100%;
+			margin-top: 10px;
+		}	
+
+		table th{
+			border-collapse: collapse;
+			background-color: #FF00FF;
+			height: 30px;
+		}	
+
 	</style>
+
       </head>
       <body>
-	<div class="">
-        <form action="" method="POST">
-		<input type="text" name="data">
-		<input type="submit" name="submit" value="Buscar">
-	</form>
+	<div class="container">
+
+	<div class= "areaPesquisa">
+        	<form action="" method="POST">
+			<input type="text" name="data" placeholder=" estilo de busca: 'mês/ano'">
+			<input type="submit" name="submit" value="Buscar">
+		</form>
+	</div>
 
 	<?php
 		include('conexao.php');
