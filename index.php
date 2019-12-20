@@ -6,18 +6,22 @@
 
 	<!--design-->
 	<style>
+
+		div.a {
+			text-align: center;;
+		}
+
 		/*ESTILOS GERAIS*/
 		.container{
 			width: 50%;
 			margin: 0 auto;
-			background: #87CEEB;
 		}
 
 		/* ESTILOS FORMULARIO*/
 
 		.areaPesquisa{
 			border-radius: 5px;   //radio da borda
-			background-color: #4682B4;  //fundo
+			background-color: #FFA500
 			padding: 10px; //preenchimento
 		}
 
@@ -45,7 +49,7 @@
 
 		table th{
 			border-collapse: collapse;
-			background-color: #FF00FF;
+			background-color: #5F9EA0;
 			height: 30px;
 		}	
 
@@ -56,6 +60,7 @@
 	<div class="container">
 
 	<div class= "areaPesquisa">
+			<div class="a"> <h1> NFC Dados </h1></div>
         	<form action="" method="POST">
 			<input type="text" name="data" placeholder=" estilo de busca: 'mês/ano'">
 			<input type="submit" name="submit" value="Buscar">
@@ -63,14 +68,16 @@
 	</div>
 
 	<?php
+	
 		include('conexao.php');
 
 		if($_SERVER['REQUEST_METHOD'] == "POST"){
 			
 			$dataPesquisa = $_POST['data'];
 
-			//Convenção de pesquisa MM/AA ex: 07/12
-			// '1' armazena o ano, '0' armazena o mes
+			//Convenção de pesquisa MM/AA ex: 07/12 
+			// '1' armazena o ano, '0' armazena o mes 
+
 			$dataArray = explode("/", $dataPesquisa);
 			$dataPesquisa = $dataArray[1] . "-" . $dataArray[0];
 
@@ -79,7 +86,7 @@
 			
 			$dataAtual = date('Y-m');
 
-			echo "Mes atual:" . $dataAtual;
+			//echo "Mes atual:" . $dataAtual;
 			$sql = "SELECT * FROM nfc_data WHERE date_hora LIKE '%" . $dataAtual . "%'";
 		}
 
@@ -98,16 +105,17 @@
 			
 			$timestamp = strtotime($linha->date_hora);
 
-			//Formatando data e hora para convenção brasileira: DD/MM/AA
-			//H maiúsculo para formato de horário de 24horas
-			//i = minutos
-			//s = segundos
+			//Formatando data e hora para convenção brasileira: DD/MM/AA 
+			//H maiúsculo para formato de horário de 24horas 
+			//i = minutos 
+			//s = segundos 
+
 			$dataTabela = date('d/m/Y H:i:s', $timestamp);
 
 			echo "<tr>";
 			echo "<td>" . $linha->mac . "</td>";
 			echo "<td>" . $linha->nfc . "</td>";
-			echo "<td>" . $dataTabela . "</td>"; //Data e hora formatada
+			echo "<td>" . $dataTabela . "</td>"; // Data e hora formatada 
 			echo "</tr>";
 		}
 
