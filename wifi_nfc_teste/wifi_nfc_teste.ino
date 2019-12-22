@@ -17,10 +17,10 @@
 #include <MFRC522.h>
 #include <WiFi.h>
 
-const char* ssid = "Residencial ta cunha";
-const char* password = "14105300";
+const char* ssid = "";
+const char* password = "";
 
-const char* host = "192.168.0.22";
+const char* host = "";
 
 #define SS_PIN 21
 #define RST_PIN 22
@@ -82,14 +82,9 @@ void loop() {
     piccType != MFRC522::PICC_TYPE_MIFARE_4K) {
     Serial.println(F("Essa Tag não corresponde ao tipo 'MIFARE Classic' ."));
     return;
-  }
-
-  if (rfid.uid.uidByte[0] != nuidPICC[0] ||
-    rfid.uid.uidByte[1] != nuidPICC[1] ||
-    rfid.uid.uidByte[2] != nuidPICC[2] ||
-    rfid.uid.uidByte[3] != nuidPICC[3] ) {
+  }else{
     Serial.println();
-    Serial.print("Novo cartão detectado: ");
+    Serial.print("Cartão detectado: ");
    
 
     // Store NUID into nuidPICC array
@@ -107,11 +102,7 @@ void loop() {
     phpReturn();
    
   }
-  else{
-    Serial.println("Esse endereço foi lido recentemente, tente outro");
-  } 
   
-
     // Halt PICC
     rfid.PICC_HaltA();
   
@@ -123,6 +114,7 @@ void loop() {
 void phpReturn(){
   WiFiClient client;
 
+  //estabelecendo conexão com o servidor
   const int httpPort = 80;
   if(!client.connect(host, httpPort)){
     Serial.println("estabelecendo conexão...");
@@ -146,24 +138,26 @@ void phpReturn(){
       "Host: " + host + "\r\n" +
       "Connection: close\r\n\r\n");
 
-   //Confirmando conexão
-    unsigned long timeout = millis();
-    while (client.available() == 0) {
-      if(millis() - timeout > 5000){
-        Serial.println(">>> Erro de conexão com o banco !");
-        client.stop();
-        return;  
-      }  
-    }
-    
-  //Confirma no terminal o resultado da inserção : 'Bem sucedido/mal sucedido'
-    while(client.available()){
-      String line = client.readStringUntil('\r');
-      Serial.print(line);  
-    }
+//#############################################################################################
+//Trecho responsável por retornar para o terminal os resultados das solicitações
 
-    Serial.println();
-    Serial.println("Aguardando nova leitura");
+  unsigned long timeout = millis();
+  while (client.available() == 0) {
+    if(millis() - timeout > 5000){
+      Serial.println(">>> Erro de conexão com o banco !");
+      client.stop();
+      return;  
+    }  
+  }
+
+  while(client.available()){
+    String line = client.readStringUntil('\r');
+    Serial.print(line);  
+  }
+
+  Serial.println();
+  Serial.println("Aguardando nova leitura");
+//#############################################################################################
 
     delay(1000);
 }
@@ -175,13 +169,10 @@ void printDec(byte *buffer, byte bufferSize) {
     Serial.print(buffer[i], DEC);
 
     //armazena na variável os dados do NFC contidos em 'buffer'
+    //Obs: Aproveitamento de código
     nfc+=buffer[i];
   }
 }
-
-
-
-
 
 /*
 void printHex(byte *buffer, byte bufferSize) {
